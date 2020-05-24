@@ -2,6 +2,8 @@
 
 A simple tool for registering the current pwd to a .dirs_rc aliases file so as to easily jump to it later.
 
+![]("./register.png")
+
 ## Usage
 
 0) Setup/install
