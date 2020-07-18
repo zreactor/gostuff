@@ -47,10 +47,8 @@ func readFromEnd(dirRCfileContent []byte) ([]byte, bool) {
 	}
 
 	if dirRCfileContent[len(dirRCfileContent)-1] == 10 {
-		fmt.Println("ends with enter")
 		_f = dirRCfileContent[:(len(dirRCfileContent) - 1)]
 	} else {
-		fmt.Println("ends with not-enter")
 		startWithNL = true
 		_f = dirRCfileContent
 	}
@@ -86,8 +84,15 @@ func getLatestNumber(inputtext []byte) string {
 
 }
 
-func composeEntryString(filename string, path string, startWithNL bool) string {
-	entryString := "export " + filename + "=\"" + path + "\"\n"
+func composeEntryString(filename string, path string, startWithNL bool, comment string) string {
+
+	entryString := "export " + filename + "=\"" + path + "\""
+
+	if len(comment) > 0 {
+		entryString = entryString + " # " + comment
+	}
+	entryString = entryString + "\n"
+
 	if startWithNL == true {
 		return "\n" + entryString
 	}
@@ -118,7 +123,15 @@ func main() {
 	var dirRCfilePath string
 
 	rcFileDir := flag.String("rcdir", "", "Using DIR_RC path provided in runtime flag instead...")
+
 	flag.Parse()
+	args := flag.Args()
+
+	comment := ""
+
+	if flag.NArg() > 0 {
+		comment = args[0]
+	}
 
 	if *rcFileDir != "" {
 		dirRCfilePath = *rcFileDir
@@ -141,8 +154,9 @@ func main() {
 	}
 
 	nextDirAlias, startWithNL := calculateNextAliasName(dirRCfileContent)
-	nextRecord := composeEntryString(nextDirAlias, getPWD(), startWithNL)
+	nextRecord := composeEntryString(nextDirAlias, getPWD(), startWithNL, comment)
 
 	appendLineToFile(nextRecord, dirRCfilePath)
+
 	fmt.Println("Done! Make sure to source your profile file before using. Ex. source .bash_profile")
 }
