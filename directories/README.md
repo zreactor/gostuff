@@ -2,15 +2,22 @@
 
 A simple tool for registering the current pwd to a .dirs_rc aliases file so as to easily jump to it later.
 
-![](./register.png)
+!["Image of command usage."](./register.png)
 
 ## Usage
 
 0) Setup/install
 
+
 ```bash
 cd showdirs && go install
 cd register && go install
+```
+
+For easier managing of go binaries, install to GOBIN dir. Make sure GOBIN is set:
+
+```bash
+export GOBIN="$HOME/gobin"
 ```
 
 1) Make a .dirs_rc file and set your .bash_profile, etc profile file to use it to load the directory alias names.
@@ -48,6 +55,13 @@ If setting dir_rc file directory via CLI flag:
 ```bash
 register -rcdir=/Users/somewhere/.dirs_rc
 register -rcdir /Users/somewhere/.dirs_rc
+```
+
+Register dir with a comment about the dir:
+
+```bash
+register "a comment about this dir"
+register -rcdir=/Users/somewhere/.dirs_rc "a comment about this dir"
 ```
 
 Reload your session via preferred method.
